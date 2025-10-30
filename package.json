@@ -1,0 +1,19 @@
+{
+  "name": "tarefas-backend",
+  "version": "1.0.0",
+  "description": "API para gerenciamento de tarefas com Prisma e MongoDB",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.18.0"
+  }
+}
