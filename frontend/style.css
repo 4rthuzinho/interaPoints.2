@@ -1,163 +1,42 @@
-/* Reset e base */
+/* Reset geral */
 * {
-  box‑sizing: border‑box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
+
+/* Fonte base */
 body {
-  font‑family: "Segoe UI", Tahoma, Geneva, Verdana, sans‑serif;
-  background: #f0f2f5;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f2f5;
   color: #333;
 }
+
+/* Grid layout */
 .app {
   display: grid;
-  grid-template‑columns: 250px 1fr;
-  min‑height: 100vh;
+  grid-template-columns: 80px 250px 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header header"
+    "menu sidebar main"
+    "footer footer footer";
+  min-height: 100vh;
 }
+
+/* Header */
 .header {
-  grid-column: 1 / span 2;
+  grid-column: 1 / span 3;
   background: #fff;
   padding: 1.5rem 2rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
 .header h1 {
   font-size: 1.8rem;
-}
-.sidebar {
-  background: #fff;
-  padding: 2rem 1.5rem;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
-  border-radius: 8px;
-  margin-top: 32px;
-}
-.stats {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-.stat {
-  text-align: center;
-}
-.stat‑num {
-  display: block;
-  font-size: 2rem;
-  font-weight: bold;
-}
-.stat‑label {
-  font-size: 0.9rem;
-  color: #666;
-}
-.progress‑wrapper label {
-  font-size: 0.9rem;
-  color: #666;
-}
-.progress‑bar {
-  width: 100%;
-  height: 12px;
-  background: #e0e0e0;
-  border-radius: 6px;
-  margin-top: 0.5rem;
-  overflow: hidden;
-}
-.progress {
-  height: 100%;
-  width: 0%;
-  background: #28a745;
-  transition: width 0.4s ease;
-}
-.main {
-  padding: 2rem;
-}
-.task‑list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.task {
-  background: #fff;
-  padding: 1.2rem 1.5rem;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
-.task.done {
-  background-color: #e9f8ee;
-  color: #888;
-  text-decoration: line-through;
-}
-.task .info {
-  max-width: calc(100% ‑ 110px);
-}
-.task .info strong {
-  font-size: 1.1rem;
-}
-.task .info p {
-  font-size: 0.9rem;
-  margin-top: 0.3rem;
-  color: #555;
-}
-.task button {
-  background: transparent;
-  border: none;
-  color: #28a745;
-  font-size: 1rem;
-  cursor: pointer;
-}
-.task button:hover {
-  color: #1e7e34;
-}
-/* existentes … */
-
-/* Estrelas de avaliação */
-.star‑rating {
-  display: flex;
-  gap: 0.2rem;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-.star‑rating .star {
-  color: #ccc;
-}
-.star‑rating .star.selected {
-  color: #ffb400;
-}
-
-/* Feedback */
-.feedback‑container {
-  margin‑top: 0.5rem;
-}
-.feedback‑container textarea {
-  width: 100%;
-  min‑height: 60px;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border‑radius: 4px;
-  font‑family: inherit;
-}
-.feedback‑container button.submitFeedback {
-  margin‑top: 0.5rem;
-  padding: 0.4rem 0.8rem;
-  background: #007bff;
-  color: white;
-  border: none;
-  border‑radius: 4px;
-  cursor: pointer;
-}
-.feedback‑container button.submitFeedback:hover {
-  background: #0056b3;
-}
-.header {
-  grid-column: 1 / span 2;
-  background: #fff;
-  padding: 1.5rem 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .btn-criar {
@@ -165,10 +44,160 @@ body {
   color: white;
   text-decoration: none;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
-  font-weight: bold;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.3s;
 }
 
 .btn-criar:hover {
   background: #0056b3;
+}
+
+/* Menu */
+.menu {
+  grid-area: menu;
+  background: #1e1e2f;
+  padding: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-link {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+/* Sidebar */
+.sidebar {
+  grid-area: sidebar;
+  background: #fff;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  margin: 0; /* nada de espaço externo */
+  align-self: start; /* só ocupar a altura do conteúdo */
+  height: auto; /* altura mínima conforme conteúdo */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem;
+}
+
+/* Estatísticas */
+.stats {
+  margin-bottom: 1rem;
+}
+
+.stat {
+  margin-bottom: 0.5rem;
+}
+
+.stat-num {
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Progresso */
+.progress-wrapper {
+  margin-top: 1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: #28a745;
+  transition: width 0.3s ease;
+}
+
+/* Main */
+.main {
+  grid-area: main;
+  background: #fff;
+  padding: 1.5rem;
+  margin: 1rem 1rem 1rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Lista de tarefas */
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-list li {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.task-list button {
+  margin-top: 0.5rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.task-list button:hover {
+  background: #1e7e34;
+}
+
+/* Footer */
+.footer {
+  grid-area: footer;
+  background: #fff;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #777;
+  box-shadow: 0 -1px 3px rgba(0,0,0,0.05);
+}
+/* Estrelas de avaliação interativas */
+.star-rating {
+  display: flex;
+  gap: 0.25rem;
+  font-size: 1.8rem; /* maiorzinho */
+  cursor: pointer;
+}
+
+.star-rating .star {
+  color: #ccc;
+  transition: color 0.2s;
+}
+
+.star-rating .star:hover,
+.star-rating .star.hover,
+.star-rating .star.selected {
+  color: #ffb400; /* amarelinho ouro */
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logo {
+  height: 60px;         /* ou 100% se o header tiver altura fixa */
+  max-height: 100%;     /* nunca ultrapassar o header */
+  object-fit: contain;  /* mantém proporção da imagem */
 }
