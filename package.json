@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently \"nodemon server.js\" \"live-server . --port=5500 --open=index.html\""
+    "dev": "concurrently \"cd backend && nodemon server.js\" \"cd frontend && live-server --port=5500 --open=index.html\""
   },
   "dependencies": {
     "@prisma/client": "^6.18.0",
