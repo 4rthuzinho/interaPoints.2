@@ -1,14 +1,35 @@
-import { criarTarefa, obterTarefas } from './tarefa.js';
+import { criarTarefa } from './tarefa.js';
 
 const taskList = document.getElementById("taskList");
-const tarefas = obterTarefas();
 
-// Renderiza todas as tarefas da lista
-tarefas.forEach(tarefa => {
-  const elemento = criarTarefa(tarefa, atualizarContagem);
-  taskList.appendChild(elemento);
-});
+// 🔹 Busca as tarefas do backend
+async function obterTarefas() {
+  try {
+    const resposta = await fetch("http://localhost:3000/tarefas");
+    if (!resposta.ok) {
+      throw new Error("Erro ao buscar tarefas");
+    }
+    return await resposta.json();
+  } catch (erro) {
+    console.error("Erro ao carregar tarefas:", erro);
+    return [];
+  }
+}
 
+// 🔹 Renderiza tarefas na tela
+async function carregarTarefas() {
+  const tarefas = await obterTarefas();
+  taskList.innerHTML = '';
+
+  tarefas.forEach(tarefa => {
+    const elemento = criarTarefa(tarefa, atualizarContagem);
+    taskList.appendChild(elemento);
+  });
+
+  atualizarContagem();
+}
+
+// 🔹 Atualiza contadores e progresso
 function atualizarContagem() {
   const total = document.querySelectorAll(".task").length;
   const feitas = document.querySelectorAll(".task.done").length;
@@ -24,8 +45,5 @@ function atualizarContagem() {
   barra.textContent = `${porcentagem}%`;
 }
 
-// Chama ao carregar
-atualizarContagem();
-
-//mongodb+srv://arthurdainova:<db_password>@interapoints.wkmxlq5.mongodb.net/?appName=interapoints
-//Nu5PlNYnF3p9CwmY
+// 🔹 Quando a página carregar, busca e exibe as tarefas
+window.addEventListener("DOMContentLoaded", carregarTarefas);
