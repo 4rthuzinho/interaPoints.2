@@ -19,4 +19,6 @@ model Tarefa {
   descricao String
   feita     Boolean  @default(false)
   createdAt DateTime @default(now())
+  feedback  String   @default("")
+  rating    Int      @default(0)
 }
