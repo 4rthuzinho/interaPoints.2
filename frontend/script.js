@@ -1,6 +1,7 @@
 import { criarAreaDeAvaliacao } from "./avaliacao.js";
 
 const taskList = document.getElementById("taskList");
+let filtroAtual = "todas"; // padrão
 
 // FORMULÁRIO DE CRIAR TAREFA
 const form = document.getElementById("formNovaTarefa");
@@ -16,6 +17,9 @@ if (form) {
       return;
     }
 
+    // ✅ Mostrar loading
+    mostrarLoading(true);
+
     try {
       const resposta = await fetch("http://localhost:3000/tarefas", {
         method: "POST",
@@ -29,6 +33,9 @@ if (form) {
       form.reset();
     } catch {
       mostrarToast("❌ Erro ao criar tarefa.", "error");
+    } finally {
+      // ✅ Esconde loading, mesmo com erro
+      mostrarLoading(false);
     }
   });
 }
@@ -86,11 +93,8 @@ async function carregarTarefas() {
 
   let tarefas = await obterTarefas();
 
-  // ✅ Ordenar: pendentes primeiro, depois concluídas
-  tarefas.sort((a, b) => {
-    if (a.feita === b.feita) return 0; // ambos iguais
-    return a.feita ? 1 : -1; // a.feita = false vem antes de true
-  });
+  // Ordena: pendentes primeiro
+  tarefas.sort((a, b) => (a.feita === b.feita ? 0 : a.feita ? 1 : -1));
 
   taskList.innerHTML = "";
 
@@ -100,7 +104,11 @@ async function carregarTarefas() {
   });
 
   atualizarContagem();
+
+  // ✅ Mantém o filtro que estava ativo
+  aplicarFiltro(filtroAtual);
 }
+
 
 
 // ATUALIZAR PROGRESSO
@@ -130,6 +138,42 @@ function mostrarToast(msg, tipo = "success") {
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
+
+// FILTRAR TAREFAS
+const botoesFiltro = document.querySelectorAll(".filtro-btn");
+
+botoesFiltro.forEach(botao => {
+  botao.addEventListener("click", () => {
+  botoesFiltro.forEach(b => b.classList.remove("ativo"));
+  botao.classList.add("ativo");
+
+  filtroAtual = botao.getAttribute("data-filtro"); // ← salva filtro atual
+  aplicarFiltro(filtroAtual);
+});
+});
+
+function aplicarFiltro(filtro) {
+  const tarefas = document.querySelectorAll(".task");
+
+  tarefas.forEach(tarefa => {
+    const isDone = tarefa.classList.contains("done");
+
+    if (filtro === "todas") {
+      tarefa.style.display = "flex";
+    } else if (filtro === "pendentes") {
+      tarefa.style.display = isDone ? "none" : "flex";
+    } else if (filtro === "concluidas") {
+      tarefa.style.display = isDone ? "flex" : "none";
+    }
+  });
+}
+function mostrarLoading(mostrar) {
+  const loader = document.getElementById("loading");
+  if (!loader) return;
+  if (mostrar) loader.classList.remove("hidden");
+  else loader.classList.add("hidden");
+}
+
 
 // AO ABRIR A PÁGINA
 window.addEventListener("DOMContentLoaded", carregarTarefas);
