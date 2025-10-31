@@ -57,18 +57,26 @@ app.post('/tarefas', async (req, res) => {
   }
 });
 
-app.put('/tarefas', async (req, res) => {
+app.put('/tarefaOk', async (req, res) => {
   const { id, feita } = req.body;
 
-  if (!id || feita === undefined) {
-    return res.status(400).json({ error: 'Necessário passar o ID e o status da tarefa.' });
+  if (!id) {
+    return res.status(400).json({ error: 'Necessário passar o ID.' });
   }
 
   try {
+    const tarefaExistente = await prisma.tarefa.findUnique({
+      where: { id }
+    });
+
+    if (!tarefaExistente) {
+      return res.status(404).json({ error: 'Tarefa não encontrada.' });
+    }
+
     const tarefa = await prisma.tarefa.update({
       where: {id},
       data: {
-        feita
+        feita: true
       }
     });
 
