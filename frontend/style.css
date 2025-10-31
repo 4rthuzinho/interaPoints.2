@@ -255,25 +255,28 @@ body {
 /* 🔹 Toast bonitinho (pop-up no canto) */
 .toast {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #4caf50; /* verde sucesso */
+  top: 50%;              /* centraliza na vertical */
+  left: 50%;             /* centraliza na horizontal */
+  transform: translate(-50%, -60%) scale(0.9);
+  background-color: #4caf50;
   color: #fff;
-  padding: 14px 20px;
+  padding: 14px 24px;
   border-radius: 8px;
-  font-size: 14px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-  transform: translateY(20px);
+  transition: opacity 0.4s ease-in-out;
+  pointer-events: none; /* evita que bloqueie cliques na página */
+  z-index: 1000;        /* fica acima de tudo */
 }
 
 .toast.show {
-  opacity: 1;
-  transform: translateY(0);
+ opacity: 1;
+ transform: translate(-50%, -50%) scale(1);
 }
 
 .toast.error {
-  background-color: #e53935; /* vermelho erro */
+  background-color: #e53935;
 }
+

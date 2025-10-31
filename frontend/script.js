@@ -1,8 +1,8 @@
-import { criarAreaDeAvaliacao } from './avaliacao.js';
+import { criarAreaDeAvaliacao } from "./avaliacao.js";
 
 const taskList = document.getElementById("taskList");
 
-// ✅ FORMULÁRIO (somente existe na tela de "Nova Tarefa")
+// FORMULÁRIO DE CRIAR TAREFA
 const form = document.getElementById("formNovaTarefa");
 if (form) {
   form.addEventListener("submit", async (event) => {
@@ -12,7 +12,7 @@ if (form) {
     const descricao = document.getElementById("descricao").value.trim();
 
     if (!titulo || !descricao) {
-      alert("Preencha título e descrição!");
+      mostrarToast("Preencha título e descrição!", "error");
       return;
     }
 
@@ -23,66 +23,68 @@ if (form) {
         body: JSON.stringify({ titulo, descricao })
       });
 
-      if (!resposta.ok) {
-        throw new Error("Erro ao criar tarefa");
-      }
+      if (!resposta.ok) throw new Error();
 
-      const novaTarefa = await resposta.json();
-      mostrarToast("✅ Tarefa criada com sucesso!");
-      console.log("✅ Tarefa criada:", novaTarefa);
-
-      form.reset(); // limpa o formulário
-
-      // ✅ Se quiser, pode redirecionar depois de criar:
-      // window.location.href = "index.html"; // onde mostra as tarefas
-
-    } catch (erro) {
-      console.error("Erro ao enviar tarefa:", erro);
+      mostrarToast("✅ Tarefa criada!");
+      form.reset();
+    } catch {
       mostrarToast("❌ Erro ao criar tarefa.", "error");
     }
   });
 }
 
-// 🔹 Cria visualmente uma tarefa com botão de concluir
+// CRIAR ELEMENTO VISUAL DA TAREFA
 function criarTarefa(tarefaObj, atualizarContagem) {
   const li = document.createElement("li");
   li.className = "task";
+  li.dataset.id = tarefaObj.id;
+
+  if (tarefaObj.feita) li.classList.add("done");
 
   li.innerHTML = `
     <div class="info">
       <strong>${tarefaObj.titulo}</strong>
       <p>${tarefaObj.descricao}</p>
     </div>
-    <button class="botaoConcluir">✓ Concluir</button>
+    ${!tarefaObj.feita ? `<button class="botaoConcluir">✓ Concluir</button>` : ""}
   `;
 
+  if (tarefaObj.feita && tarefaObj.rating > 0) {
+    const resultado = document.createElement("div");
+    resultado.className = "resultadoFeedback";
+    resultado.innerHTML = `⭐ ${tarefaObj.rating}/5<br>${tarefaObj.feedback}`;
+    li.appendChild(resultado);
+  }
+
+  // ✅ AGORA: Concluir apenas abre avaliação — sem API aqui
   const botao = li.querySelector(".botaoConcluir");
-  botao.addEventListener("click", () => {
-    botao.style.display = "none";
-    criarAreaDeAvaliacao(li, atualizarContagem);
-  });
+  if (botao) {
+    botao.addEventListener("click", () => {
+      botao.style.display = "none"; // some na hora
+      criarAreaDeAvaliacao(li, atualizarContagem, tarefaObj.id);
+    });
+  }
 
   return li;
 }
 
-// 🔹 Busca as tarefas do backend
+// BUSCAR TAREFAS NO BACKEND
 async function obterTarefas() {
   try {
-    const resposta = await fetch("http://localhost:3000/tarefas");
-    if (!resposta.ok) throw new Error("Erro ao buscar tarefas");
-    return await resposta.json();
-  } catch (erro) {
-    console.error("Erro ao carregar tarefas:", erro);
+    const resp = await fetch("http://localhost:3000/tarefas");
+    if (!resp.ok) throw new Error();
+    return await resp.json();
+  } catch {
+    mostrarToast("❌ Erro ao carregar tarefas", "error");
     return [];
   }
 }
 
-// 🔹 Renderiza tarefas na tela
+// EXIBIR LISTA
 async function carregarTarefas() {
-  if (!taskList) return; // garante que só roda onde existe a lista
-
+  if (!taskList) return;
   const tarefas = await obterTarefas();
-  taskList.innerHTML = '';
+  taskList.innerHTML = "";
 
   tarefas.forEach(tarefa => {
     const elemento = criarTarefa(tarefa, atualizarContagem);
@@ -92,7 +94,7 @@ async function carregarTarefas() {
   atualizarContagem();
 }
 
-// 🔹 Atualiza contadores e progresso
+// ATUALIZAR PROGRESSO
 function atualizarContagem() {
   const total = document.querySelectorAll(".task").length;
   const feitas = document.querySelectorAll(".task.done").length;
@@ -103,29 +105,24 @@ function atualizarContagem() {
     document.getElementById("feitas").textContent = feitas;
     document.getElementById("pendentes").textContent = pendentes;
 
-    const porcentagem = total === 0 ? 0 : Math.round((feitas / total) * 100);
+    const pct = total === 0 ? 0 : Math.round((feitas / total) * 100);
     const barra = document.getElementById("progresso");
-    barra.style.width = `${porcentagem}%`;
-    barra.textContent = `${porcentagem}%`;
+    barra.style.width = `${pct}%`;
+    barra.textContent = `${pct}%`;
   }
 }
-function mostrarToast(mensagem, tipo = "success") {
+
+// TOAST
+function mostrarToast(msg, tipo = "success") {
   const toast = document.getElementById("toast");
-  toast.textContent = mensagem;
-
-  if (tipo === "error") {
-    toast.classList.add("error");
-  } else {
-    toast.classList.remove("error");
-  }
-
+  toast.textContent = msg;
+  if (tipo === "error") toast.classList.add("error");
+  else toast.classList.remove("error");
   toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000); // 3 segundos e some
+  setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-
-// 🔹 Quando a página carregar, se tiver lista, renderiza
+// AO ABRIR A PÁGINA
 window.addEventListener("DOMContentLoaded", carregarTarefas);
+
+export { atualizarContagem, mostrarToast };

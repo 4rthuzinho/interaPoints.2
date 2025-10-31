@@ -57,8 +57,9 @@ app.post('/tarefas', async (req, res) => {
   }
 });
 
+// Rota para concluir uma tarefa com avaliação
 app.put('/tarefaOk', async (req, res) => {
-  const { id, feita } = req.body;
+  const { id, rating, feedback } = req.body;
 
   if (!id) {
     return res.status(400).json({ error: 'Necessário passar o ID.' });
@@ -73,20 +74,23 @@ app.put('/tarefaOk', async (req, res) => {
       return res.status(404).json({ error: 'Tarefa não encontrada.' });
     }
 
-    const tarefa = await prisma.tarefa.update({
-      where: {id},
+    const tarefaAtualizada = await prisma.tarefa.update({
+      where: { id },
       data: {
-        feita: true
+        feita: true,
+        rating: Number(rating) || 0,
+        feedback: feedback || ""
       }
     });
 
-    res.status(200).json(tarefa);
-    console.log("Tarefa atualizada:", tarefa.titulo)
+    console.log("✅ Tarefa atualizada:", tarefaAtualizada.titulo);
+    res.status(200).json(tarefaAtualizada);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao atualizar tarefa.' });
   }
 });
+
 
 app.listen(3000, () => {
   console.log('✅ Servidor rodando em http://localhost:3000');

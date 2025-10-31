@@ -1,4 +1,6 @@
-export function criarAreaDeAvaliacao(containerTarefa, callbackFinalizacao) {
+import { mostrarToast, atualizarContagem } from "./script.js";
+
+export function criarAreaDeAvaliacao(containerTarefa, callback, tarefaId) {
   const feedbackContainer = document.createElement("div");
   feedbackContainer.className = "feedback-container";
 
@@ -16,56 +18,57 @@ export function criarAreaDeAvaliacao(containerTarefa, callbackFinalizacao) {
 
   containerTarefa.appendChild(feedbackContainer);
 
+  let rating = 0;
   const stars = feedbackContainer.querySelectorAll(".star");
-  let selectedRating = 0;
 
   stars.forEach(star => {
-    const value = parseInt(star.getAttribute("data-value"));
+    const value = +star.dataset.value;
 
-    // ✅ Quando passa o mouse (hover)
     star.addEventListener("mouseover", () => {
-      stars.forEach(s => {
-        const sValue = parseInt(s.getAttribute("data-value"));
-        s.classList.toggle("hover", sValue <= value);
-      });
+      stars.forEach(s => s.classList.toggle("hover", s.dataset.value <= value));
     });
 
-    // ✅ Quando sai do hover
     star.addEventListener("mouseout", () => {
       stars.forEach(s => s.classList.remove("hover"));
     });
 
-    // ✅ Quando clica (seleciona fixo)
     star.addEventListener("click", () => {
-      selectedRating = value;
-      stars.forEach(s => {
-        const sValue = parseInt(s.getAttribute("data-value"));
-        s.classList.toggle("selected", sValue <= selectedRating);
-      });
+      rating = value;
+      stars.forEach(s => s.classList.toggle("selected", s.dataset.value <= rating));
     });
   });
 
-  const submitBtn = feedbackContainer.querySelector(".submitFeedback");
-  submitBtn.addEventListener("click", () => {
-    const textarea = feedbackContainer.querySelector("textarea");
-    const feedbackText = textarea.value.trim();
+  feedbackContainer.querySelector(".submitFeedback").addEventListener("click", async () => {
+    const feedbackText = feedbackContainer.querySelector("textarea").value.trim();
 
-    if (selectedRating === 0) {
-      alert("Por favor, selecione uma avaliação (1-5 estrelas).");
+    if (rating === 0) {
+      mostrarToast("⚠ Escolha de 1 a 5 estrelas!", "error");
       return;
     }
     if (feedbackText === "") {
-      alert("Por favor, insira seu feedback antes de finalizar.");
+      mostrarToast("⚠ Escreva um feedback!", "error");
       return;
     }
 
-    containerTarefa.classList.add("done");
-    feedbackContainer.remove();
+    try {
+      await fetch("http://localhost:3000/tarefaOk", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: tarefaId, rating, feedback: feedbackText })
+      });
 
-    const resultado = document.createElement("div");
-    resultado.innerHTML = `Avaliação: ${selectedRating} / 5 ★<br>Feedback: ${feedbackText}`;
-    containerTarefa.appendChild(resultado);
+      containerTarefa.classList.add("done");
+      feedbackContainer.remove();
 
-    if (typeof callbackFinalizacao === "function") callbackFinalizacao();
+      const resultado = document.createElement("div");
+      resultado.className = "resultadoFeedback";
+      resultado.innerHTML = `⭐ ${rating}/5<br>${feedbackText}`;
+      containerTarefa.appendChild(resultado);
+
+      mostrarToast("✅ Tarefa concluída com sucesso!");
+      if (callback) callback();
+    } catch {
+      mostrarToast("❌ Erro ao salvar, tente de novo.", "error");
+    }
   });
 }
