@@ -61,7 +61,7 @@ function criarTarefa(tarefaObj, atualizarContagem) {
   if (botao) {
     botao.addEventListener("click", () => {
       botao.style.display = "none"; // some na hora
-      criarAreaDeAvaliacao(li, atualizarContagem, tarefaObj.id);
+      criarAreaDeAvaliacao(li, carregarTarefas, tarefaObj.id);
     });
   }
 
@@ -83,7 +83,15 @@ async function obterTarefas() {
 // EXIBIR LISTA
 async function carregarTarefas() {
   if (!taskList) return;
-  const tarefas = await obterTarefas();
+
+  let tarefas = await obterTarefas();
+
+  // ✅ Ordenar: pendentes primeiro, depois concluídas
+  tarefas.sort((a, b) => {
+    if (a.feita === b.feita) return 0; // ambos iguais
+    return a.feita ? 1 : -1; // a.feita = false vem antes de true
+  });
+
   taskList.innerHTML = "";
 
   tarefas.forEach(tarefa => {
@@ -93,6 +101,7 @@ async function carregarTarefas() {
 
   atualizarContagem();
 }
+
 
 // ATUALIZAR PROGRESSO
 function atualizarContagem() {
