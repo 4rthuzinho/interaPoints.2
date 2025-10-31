@@ -40,7 +40,7 @@ body {
 }
 
 .btn-criar {
-  background: #007bff;
+  background: #01c6d8;
   color: white;
   text-decoration: none;
   padding: 0.5rem 1rem;
@@ -50,7 +50,8 @@ body {
 }
 
 .btn-criar:hover {
-  background: #0056b3;
+  background: #02919e;
+  font-weight: bold;
 }
 
 /* Menu */
@@ -116,7 +117,7 @@ body {
 .progress {
   height: 100%;
   width: 0%;
-  background: #28a745;
+  background: #01c6d8;
   transition: width 0.3s ease;
 }
 
@@ -147,7 +148,7 @@ body {
 
 .task-list button {
   margin-top: 0.5rem;
-  background: #28a745;
+  background: #01c6d8;
   color: white;
   border: none;
   padding: 0.4rem 0.8rem;
@@ -158,7 +159,8 @@ body {
 }
 
 .task-list button:hover {
-  background: #1e7e34;
+  background: #02919e;
+  font-weight: bold;
 }
 
 /* Footer */
@@ -224,4 +226,26 @@ body {
   color: #ffb400;
   cursor: pointer;
   gap: 0.25rem;
+}
+.loading {
+  display: none;
+  text-align: center;
+  margin: 20px;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

@@ -1,6 +1,28 @@
-import { criarTarefa } from './tarefa.js';
+import { criarAreaDeAvaliacao } from './avaliacao.js';
 
 const taskList = document.getElementById("taskList");
+
+// 🔹 Cria visualmente uma tarefa com botão de concluir
+function criarTarefa(tarefaObj, atualizarContagem) {
+  const li = document.createElement("li");
+  li.className = "task";
+
+  li.innerHTML = `
+    <div class="info">
+      <strong>${tarefaObj.titulo}</strong>
+      <p>${tarefaObj.descricao}</p>
+    </div>
+    <button class="botaoConcluir">✓ Concluir</button>
+  `;
+
+  const botao = li.querySelector(".botaoConcluir");
+  botao.addEventListener("click", () => {
+    botao.style.display = "none";
+    criarAreaDeAvaliacao(li, atualizarContagem);
+  });
+
+  return li;
+}
 
 // 🔹 Busca as tarefas do backend
 async function obterTarefas() {
