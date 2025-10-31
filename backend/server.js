@@ -57,6 +57,29 @@ app.post('/tarefas', async (req, res) => {
   }
 });
 
+app.put('/tarefas', async (req, res) => {
+  const { id, feita } = req.body;
+
+  if (!id || feita === undefined) {
+    return res.status(400).json({ error: 'Necessário passar o ID e o status da tarefa.' });
+  }
+
+  try {
+    const tarefa = await prisma.tarefa.update({
+      where: {id},
+      data: {
+        feita
+      }
+    });
+
+    res.status(200).json(tarefa);
+    console.log("Tarefa atualizada:", tarefa.titulo)
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao atualizar tarefa.' });
+  }
+});
+
 app.listen(3000, () => {
   console.log('✅ Servidor rodando em http://localhost:3000');
 });
