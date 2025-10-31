@@ -4,23 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nova Tarefa</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="nova-tarefa.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Criar Nova Tarefa</h1>
-    <form id="formNovaTarefa">
-      <label for="titulo">Título:</label>
-      <input type="text" id="titulo" required />
+  <div class="app">
 
-      <label for="descricao">Descrição:</label>
-      <textarea id="descricao" required></textarea>
+    <header class="header">
+      <div class="logo-area">
+        <img src="logo.png" alt="Logo" class="logo">
+      </div>
+      <a href="index.html" class="home-btn">Home</a>
+    </header>
 
-      <button type="submit">Adicionar Tarefa</button>
-    </form>
+    <main class="container">
+      <form id="formNovaTarefa" class="form-tarefa">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" required />
+
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" required></textarea>
+
+        <button type="submit">Adicionar Tarefa</button>
+      </form>
+    </main>
+
   </div>
 
-  <script type="module" src="script.js"></script>
   <div id="toast" class="toast hidden">Tarefa criada!</div>
+  <script type="module" src="script.js"></script>
 </body>
 </html>

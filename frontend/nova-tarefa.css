@@ -1,0 +1,150 @@
+/* ================================
+   RESET E CONFIGURAÇÃO GLOBAL
+================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background-color: #f0f2f5;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden; /* evita barras de rolagem desnecessárias */
+}
+
+/* Container principal da página */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* preenche a tela toda */
+}
+
+/* ================================
+   HEADER (LOGO + TÍTULO + HOME)
+================================== */
+/* Header */
+.header {
+  grid-column: 1 / span 3;
+  background: #fff;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
+}
+
+.header h1 {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #333;
+  margin-left: 10px;
+  flex: 1;
+  text-align: center;
+}
+
+.home-btn {
+  background-color: #00bcd4;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 12px;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  transition: 0.15s ease-in-out;
+}
+
+.home-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ================================
+   ÁREA CENTRAL COM O FORM
+================================== */
+.container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.form-tarefa {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* Labels e inputs */
+.form-tarefa label {
+  font-weight: bold;
+  color: #333;
+}
+
+.form-tarefa input,
+.form-tarefa textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-tarefa textarea {
+  resize: none;
+  height: 80px;
+}
+
+/* Botão enviar */
+.form-tarefa button {
+  background-color: #00bcd4;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.form-tarefa button:hover {
+  background-color: #0199ae;
+}
+
+/* ================================
+   TOAST (POP-UP BONITINHO)
+================================== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 0.4s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.error {
+  background-color: #e53935;
+}
