@@ -21,4 +21,16 @@ model Tarefa {
   createdAt DateTime @default(now())
   feedback  String   @default("")
   rating    Int      @default(0)
+  valor     Int      @default(0)
+}
+
+model Usuario {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  apelido   String
+  setor     String
+  email     String
+  password  String
+  pontuacao Int      @default(0)
+  createdAt DateTime @default(now())
 }

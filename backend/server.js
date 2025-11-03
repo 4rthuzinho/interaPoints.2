@@ -91,6 +91,56 @@ app.put('/tarefaOk', async (req, res) => {
   }
 });
 
+// ====================== USUÁRIOS ======================
+
+// Criar usuário
+app.post("/usuarios", async (req, res) => {
+  try {
+    const { name, apelido = "", setor, email, password } = req.body;
+
+    if (!name || !email || !password || !setor) {
+      return res.status(400).json({ error: "Campos obrigatórios faltando." });
+    }
+
+    const novoUsuario = await prisma.usuario.create({
+      data: {
+        name,
+        apelido,
+        setor,
+        email,
+        password,
+        pontuacao: 0
+      },
+    });
+
+    res.status(201).json(novoUsuario);
+  } catch (error) {
+    console.error("Erro ao criar usuário:", error);
+    res.status(500).json({ error: "Erro interno do servidor." });
+  }
+});
+
+// Listar usuários
+app.get("/usuarios", async (req, res) => {
+  try {
+    const usuarios = await prisma.usuario.findMany({
+      select: {
+        id: true,
+        name: true,
+        apelido: true,
+        pontuacao: true,
+      },
+      orderBy: {
+        pontuacao: "desc",
+      },
+    });
+
+    res.json(usuarios);
+  } catch (error) {
+    console.error("Erro ao buscar usuários:", error);
+    res.status(500).json({ error: "Erro ao buscar usuários." });
+  }
+});
 
 app.listen(3000, () => {
   console.log('✅ Servidor rodando em http://localhost:3000');
