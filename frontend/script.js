@@ -3,7 +3,35 @@ import { criarAreaDeAvaliacao } from "./avaliacao.js";
 const taskList = document.getElementById("taskList");
 let filtroAtual = "todas"; // padrão
 
-// FORMULÁRIO DE CRIAR TAREFA
+// ================== LOGIN E ROLES ==================
+document.addEventListener("DOMContentLoaded", () => {
+  const role = localStorage.getItem("role");
+  const token = localStorage.getItem("token");
+  const btnCriar = document.getElementById("btnCriarTarefa");
+  const btnLogout = document.getElementById("btnLogout");
+
+  // Se não estiver logado, volta pra tela de login
+  if (!token || !role) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  // Exibe ou oculta botão "Nova Tarefa"
+  if (btnCriar) {
+    if (role !== "ADMIN") btnCriar.style.display = "none";
+    else btnCriar.style.display = "inline-block";
+  }
+
+  // Logout
+  if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "login.html";
+    });
+  }
+});
+
+// ================== FORMULÁRIO DE CRIAR TAREFA ==================
 const form = document.getElementById("formNovaTarefa");
 if (form) {
   form.addEventListener("submit", async (event) => {
@@ -17,13 +45,17 @@ if (form) {
       return;
     }
 
-    // ✅ Mostrar loading
     mostrarLoading(true);
 
     try {
+      const token = localStorage.getItem("token");
+
       const resposta = await fetch("http://localhost:3000/tarefas", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ titulo, descricao })
       });
 
@@ -34,13 +66,12 @@ if (form) {
     } catch {
       mostrarToast("❌ Erro ao criar tarefa.", "error");
     } finally {
-      // ✅ Esconde loading, mesmo com erro
       mostrarLoading(false);
     }
   });
 }
 
-// CRIAR ELEMENTO VISUAL DA TAREFA
+// ================== CRIAR ELEMENTO VISUAL DA TAREFA ==================
 function criarTarefa(tarefaObj, atualizarContagem) {
   const li = document.createElement("li");
   li.className = "task";
@@ -63,11 +94,10 @@ function criarTarefa(tarefaObj, atualizarContagem) {
     li.appendChild(resultado);
   }
 
-  // ✅ AGORA: Concluir apenas abre avaliação — sem API aqui
   const botao = li.querySelector(".botaoConcluir");
   if (botao) {
     botao.addEventListener("click", () => {
-      botao.style.display = "none"; // some na hora
+      botao.style.display = "none";
       criarAreaDeAvaliacao(li, carregarTarefas, tarefaObj.id);
     });
   }
@@ -75,10 +105,13 @@ function criarTarefa(tarefaObj, atualizarContagem) {
   return li;
 }
 
-// BUSCAR TAREFAS NO BACKEND
+// ================== BUSCAR TAREFAS NO BACKEND ==================
 async function obterTarefas() {
   try {
-    const resp = await fetch("http://localhost:3000/tarefas");
+    const token = localStorage.getItem("token");
+    const resp = await fetch("http://localhost:3000/tarefas", {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
     if (!resp.ok) throw new Error();
     return await resp.json();
   } catch {
@@ -87,13 +120,12 @@ async function obterTarefas() {
   }
 }
 
-// EXIBIR LISTA
+// ================== EXIBIR LISTA ==================
 async function carregarTarefas() {
   if (!taskList) return;
 
   let tarefas = await obterTarefas();
 
-  // Ordena: pendentes primeiro
   tarefas.sort((a, b) => (a.feita === b.feita ? 0 : a.feita ? 1 : -1));
 
   taskList.innerHTML = "";
@@ -104,14 +136,10 @@ async function carregarTarefas() {
   });
 
   atualizarContagem();
-
-  // ✅ Mantém o filtro que estava ativo
   aplicarFiltro(filtroAtual);
 }
 
-
-
-// ATUALIZAR PROGRESSO
+// ================== ATUALIZAR PROGRESSO ==================
 function atualizarContagem() {
   const total = document.querySelectorAll(".task").length;
   const feitas = document.querySelectorAll(".task.done").length;
@@ -129,7 +157,7 @@ function atualizarContagem() {
   }
 }
 
-// TOAST
+// ================== TOAST ==================
 function mostrarToast(msg, tipo = "success") {
   const toast = document.getElementById("toast");
   toast.textContent = msg;
@@ -139,17 +167,17 @@ function mostrarToast(msg, tipo = "success") {
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-// FILTRAR TAREFAS
+// ================== FILTRAR TAREFAS ==================
 const botoesFiltro = document.querySelectorAll(".filtro-btn");
 
 botoesFiltro.forEach(botao => {
   botao.addEventListener("click", () => {
-  botoesFiltro.forEach(b => b.classList.remove("ativo"));
-  botao.classList.add("ativo");
+    botoesFiltro.forEach(b => b.classList.remove("ativo"));
+    botao.classList.add("ativo");
 
-  filtroAtual = botao.getAttribute("data-filtro"); // ← salva filtro atual
-  aplicarFiltro(filtroAtual);
-});
+    filtroAtual = botao.getAttribute("data-filtro");
+    aplicarFiltro(filtroAtual);
+  });
 });
 
 function aplicarFiltro(filtro) {
@@ -167,6 +195,8 @@ function aplicarFiltro(filtro) {
     }
   });
 }
+
+// ================== LOADING ==================
 function mostrarLoading(mostrar) {
   const loader = document.getElementById("loading");
   if (!loader) return;
@@ -174,8 +204,7 @@ function mostrarLoading(mostrar) {
   else loader.classList.add("hidden");
 }
 
-
-// AO ABRIR A PÁGINA
+// ================== INÍCIO ==================
 window.addEventListener("DOMContentLoaded", carregarTarefas);
 
 export { atualizarContagem, mostrarToast };

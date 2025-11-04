@@ -343,3 +343,142 @@ body {
 .hidden {
   display: none;
 }
+/* ====== LOGIN PAGE ====== */
+.login-body {
+  background-color: #f9fafc;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  text-align: center;
+  max-width: 360px;
+  width: 90%;
+}
+
+.logo {
+  width: 140px;
+  margin-bottom: 10px;
+}
+
+.titulo-sistema {
+  color: #00bcd4;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.login-card label {
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.login-card input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 4px;
+  font-size: 1rem;
+}
+
+.login-card button {
+  margin-top: 20px;
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-card button:hover {
+  background-color: #009fb7;
+}
+
+.link-esqueceu {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: #00bcd4;
+  text-decoration: none;
+}
+
+.link-esqueceu:hover {
+  text-decoration: underline;
+}
+
+.erro {
+  color: red;
+  font-size: 0.9em;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ====== AVISO SUPORTE ====== */
+.aviso-suporte {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.aviso-suporte.hidden {
+  display: none;
+}
+
+.aviso-box {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  text-align: center;
+  font-size: 1rem;
+}
+
+.aviso-box button {
+  margin-top: 15px;
+  background: #00bcd4;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.aviso-box button:hover {
+  background: #009fb7;
+}
+
+/* ====== BOTÃO SAIR ====== */
+.btn-sair {
+  background-color: #ff5252;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-sair:hover {
+  background-color: #e53935;
+}
