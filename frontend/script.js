@@ -7,7 +7,6 @@ let filtroAtual = "todas"; // padrão
 document.addEventListener("DOMContentLoaded", () => {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("id")
   const btnCriar = document.getElementById("btnCriarTarefa");
   const btnLogout = document.getElementById("btnLogout");
 
@@ -75,6 +74,7 @@ if (form) {
 // ================== CRIAR ELEMENTO VISUAL DA TAREFA ==================
 function criarTarefa(tarefaObj, atualizarContagem) {
   const li = document.createElement("li");
+  const userId = localStorage.getItem("id")
   li.className = "task";
   li.dataset.id = tarefaObj.id;
 
@@ -99,7 +99,7 @@ function criarTarefa(tarefaObj, atualizarContagem) {
   if (botao) {
     botao.addEventListener("click", () => {
       botao.style.display = "none";
-      criarAreaDeAvaliacao(li, carregarTarefas, tarefaObj.id);
+      criarAreaDeAvaliacao(li, carregarTarefas, tarefaObj.id, userId);
     });
   }
 

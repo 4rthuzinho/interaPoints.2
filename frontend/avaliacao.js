@@ -1,6 +1,6 @@
 import { mostrarToast, atualizarContagem } from "./script.js";
 
-export function criarAreaDeAvaliacao(containerTarefa, callback, tarefaId) {
+export function criarAreaDeAvaliacao(containerTarefa, callback, tarefaId, userId) {
   const feedbackContainer = document.createElement("div");
   feedbackContainer.className = "feedback-container";
 
@@ -40,6 +40,7 @@ export function criarAreaDeAvaliacao(containerTarefa, callback, tarefaId) {
 
   feedbackContainer.querySelector(".submitFeedback").addEventListener("click", async () => {
     const feedbackText = feedbackContainer.querySelector("textarea").value.trim();
+    const userId = localStorage.getItem("userId");
 
     if (rating === 0) {
       mostrarToast("⚠ Escolha de 1 a 5 estrelas!", "error");
@@ -54,7 +55,7 @@ export function criarAreaDeAvaliacao(containerTarefa, callback, tarefaId) {
       await fetch("http://localhost:3000/tarefaOk", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: tarefaId, rating, feedback: feedbackText })
+        body: JSON.stringify({ id: tarefaId, rating, feedback: feedbackText, userId})
       });
 
       containerTarefa.classList.add("done");

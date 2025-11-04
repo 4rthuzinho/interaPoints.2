@@ -59,10 +59,14 @@ app.post('/tarefas', async (req, res) => {
 
 // Rota para concluir uma tarefa com avaliação
 app.put('/tarefaOk', async (req, res) => {
-  const { id, rating, feedback } = req.body;
+  const { id, rating, feedback, userId } = req.body;
 
   if (!id) {
     return res.status(400).json({ error: 'Necessário passar o ID.' });
+  }
+  if (!userId) {
+    console.log("userId:", userId);
+    return res.status(400).json({ error: 'User ID não encontrado.' });
   }
 
   try {
@@ -79,7 +83,8 @@ app.put('/tarefaOk', async (req, res) => {
       data: {
         feita: true,
         rating: Number(rating) || 0,
-        feedback: feedback || ""
+        feedback: feedback || "",
+        usuarioId: userId || null,
       }
     });
 
