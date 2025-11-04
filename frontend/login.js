@@ -28,8 +28,9 @@ btnLogin.addEventListener("click", async () => {
     localStorage.setItem("token", data.token);
     localStorage.setItem("role", data.user.role);
     localStorage.setItem("usuario", JSON.stringify(data.user));
+    localStorage.setItem("userId", data.user.id);
 
-    // redireciona para a página principal
+    // redireciona para a página principal;
     window.location.href = "index.html";
   } catch (e) {
     console.error("Erro ao logar:", e);

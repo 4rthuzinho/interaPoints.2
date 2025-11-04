@@ -7,6 +7,7 @@ let filtroAtual = "todas"; // padrão
 document.addEventListener("DOMContentLoaded", () => {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("id")
   const btnCriar = document.getElementById("btnCriarTarefa");
   const btnLogout = document.getElementById("btnLogout");
 
