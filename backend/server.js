@@ -136,6 +136,7 @@ app.get("/usuarios", async (req, res) => {
     });
 
     res.json(usuarios);
+    console.log("Usuários:", usuarios);
   } catch (error) {
     console.error("Erro ao buscar usuários:", error);
     res.status(500).json({ error: "Erro ao buscar usuários." });
