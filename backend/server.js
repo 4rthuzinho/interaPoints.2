@@ -3,6 +3,8 @@ dotenv.config();
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
+import bcrypt from "bcryptjs";
+import { gerarToken, verificarToken, permitirRoles } from "./middleware/auth.js";
 
 const app = express();
 const prisma = new PrismaClient();
@@ -30,8 +32,6 @@ app.get('/tarefas', async (req, res) => {
     res.status(500).json({error: 'Erro ao bsucar tarefas.'})
   }
 });
-
-
 
 // Rota para criar tarefa
 app.post('/tarefas', async (req, res) => {
@@ -121,7 +121,7 @@ app.post("/usuarios", async (req, res) => {
 });
 
 // Listar usuários
-app.get("/usuarios", async (req, res) => {
+app.get("/usuarios", verificarToken, permitirRoles("ADMIN"), async (req, res) => {
   try {
     const usuarios = await prisma.usuario.findMany({
       select: {
@@ -129,17 +129,48 @@ app.get("/usuarios", async (req, res) => {
         name: true,
         apelido: true,
         pontuacao: true,
+        role: true,
       },
-      orderBy: {
-        pontuacao: "desc",
-      },
+      orderBy: { pontuacao: "desc" },
     });
-
     res.json(usuarios);
-    console.log("Usuários:", usuarios);
   } catch (error) {
     console.error("Erro ao buscar usuários:", error);
     res.status(500).json({ error: "Erro ao buscar usuários." });
+  }
+});
+
+// ====================== LOGIN ======================
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const usuario = await prisma.usuario.findUnique({ where: { email } });
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    if (password !== usuario.password) {
+  console.log("senha digitada:", password)
+  console.log("Senha correta:", usuario.password)
+  return res.status(401).json({ error: "Senha incorreta" });
+}
+    const token = gerarToken(usuario);
+
+    res.json({
+      message: "Login realizado com sucesso",
+      token,
+      user: {
+        id: usuario.id,
+        name: usuario.name,
+        email: usuario.email,
+        role: usuario.role,
+      },  
+    });
+    console.log("Login sucessfuly by user:", usuario.name)
+  } catch (error) {
+    console.error("Erro no login:", error);
+    res.status(500).json({ error: "Erro no processo de login" });
   }
 });
 
