@@ -252,33 +252,61 @@ body {
   }
 }
 
-/* 🔹 Toast bonitinho (pop-up no canto) */
-.toast {
+/* TOAST BASE */
+#toast {
   position: fixed;
-  top: 50%;              /* centraliza na vertical */
-  left: 50%;             /* centraliza na horizontal */
-  transform: translate(-50%, -60%) scale(0.9);
-  background-color: #4caf50;
+  bottom: 300px;
+  left: 50%;
+  transform: translate(-50%, 120%); /* começa fora da tela */
+  background-color: #333;
   color: #fff;
-  padding: 14px 24px;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 14px 22px;
+  border-radius: 12px;
   font-weight: 500;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-size: 15px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   opacity: 0;
-  transition: opacity 0.4s ease-in-out;
-  pointer-events: none; /* evita que bloqueie cliques na página */
-  z-index: 1000;        /* fica acima de tudo */
+  pointer-events: none;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  z-index: 9999;
 }
 
-.toast.show {
- opacity: 1;
- transform: translate(-50%, -50%) scale(1);
+/* QUANDO VISÍVEL */
+#toast.show {
+  transform: translate(-50%, 0); /* sobe suavemente */
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.toast.error {
-  background-color: #e53935;
+/* SUCESSO */
+#toast:not(.error) {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
 }
+
+/* ERRO */
+#toast.error {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+/* ANIMAÇÃO SUTIL DE ENTRADA */
+#toast.show {
+  animation: bounceIn 0.5s ease;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: translate(-50%, 150%);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -10%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
+
 
 .filtros {
   display: flex;

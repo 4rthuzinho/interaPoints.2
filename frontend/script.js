@@ -162,10 +162,14 @@ function atualizarContagem() {
 function mostrarToast(msg, tipo = "success") {
   const toast = document.getElementById("toast");
   toast.textContent = msg;
+  toast.classList.remove("hidden");
   if (tipo === "error") toast.classList.add("error");
   else toast.classList.remove("error");
   toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 3000);
+  setTimeout(() => {
+    toast.classList.remove("show");
+    toast.classList.add("hidden"); // <-- esconde novamente depois
+  }, 3000);
 }
 
 // ================== FILTRAR TAREFAS ==================
