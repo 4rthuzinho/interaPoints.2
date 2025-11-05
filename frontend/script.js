@@ -2,6 +2,7 @@ import { criarAreaDeAvaliacao } from "./avaliacao.js";
 
 const taskList = document.getElementById("taskList");
 let filtroAtual = "todas"; // padrão
+const botoesFiltro = document.querySelectorAll(".filtro-btn");
 
 // ================== LOGIN E ROLES ==================
 document.addEventListener("DOMContentLoaded", () => {
@@ -74,7 +75,7 @@ if (form) {
 // ================== CRIAR ELEMENTO VISUAL DA TAREFA ==================
 function criarTarefa(tarefaObj, atualizarContagem) {
   const li = document.createElement("li");
-  const userId = localStorage.getItem("id")
+  const userId = localStorage.getItem("userId")
   li.className = "task";
   li.dataset.id = tarefaObj.id;
 
@@ -124,8 +125,9 @@ async function obterTarefas() {
 // ================== EXIBIR LISTA ==================
 async function carregarTarefas() {
   if (!taskList) return;
-
-  let tarefas = await obterTarefas();
+  
+  window.tarefas = await obterTarefas();
+  let tarefas = window.tarefas;
 
   tarefas.sort((a, b) => (a.feita === b.feita ? 0 : a.feita ? 1 : -1));
 
@@ -137,7 +139,7 @@ async function carregarTarefas() {
   });
 
   atualizarContagem();
-  aplicarFiltro(filtroAtual);
+  aplicarFiltroCombinado();
 }
 
 // ================== ATUALIZAR PROGRESSO ==================
@@ -173,31 +175,60 @@ function mostrarToast(msg, tipo = "success") {
 }
 
 // ================== FILTRAR TAREFAS ==================
-const botoesFiltro = document.querySelectorAll(".filtro-btn");
 
-botoesFiltro.forEach(botao => {
+let filtroMinhasAtivo = false;
+
+const botoesStatus = document.querySelectorAll('.filtros:not(.autor-filtros) .filtro-btn');
+const botaoMinhas = document.querySelector('.autor-filtros .filtro-btn');
+
+// Filtros principais (Todas, Pendentes, Concluídas)
+botoesStatus.forEach(botao => {
   botao.addEventListener("click", () => {
-    botoesFiltro.forEach(b => b.classList.remove("ativo"));
+    botoesStatus.forEach(b => b.classList.remove("ativo"));
     botao.classList.add("ativo");
 
     filtroAtual = botao.getAttribute("data-filtro");
-    aplicarFiltro(filtroAtual);
+    aplicarFiltroCombinado();
   });
 });
 
-function aplicarFiltro(filtro) {
+// Filtro "Minhas" é independente (liga/desliga)
+botaoMinhas.addEventListener("click", () => {
+  const userId = localStorage.getItem("userId");
+  filtroMinhasAtivo = !filtroMinhasAtivo;
+  botaoMinhas.classList.toggle("ativo", filtroMinhasAtivo);
+  aplicarFiltroCombinado();
+  console.log("click em minhas")
+  console.log("id:", userId)
+  console.log("filtro de minhas:", filtroMinhasAtivo);
+});
+
+function aplicarFiltroCombinado() {
+  const userId = localStorage.getItem("userId");
   const tarefas = document.querySelectorAll(".task");
 
   tarefas.forEach(tarefa => {
     const isDone = tarefa.classList.contains("done");
+    const tarefaId = tarefa.dataset.id;
+    const tarefaObj = window.tarefas?.find(t => String(t.id) === String(tarefaId));
+    let deveMostrar = false;
 
-    if (filtro === "todas") {
-      tarefa.style.display = "flex";
-    } else if (filtro === "pendentes") {
-      tarefa.style.display = isDone ? "none" : "flex";
-    } else if (filtro === "concluidas") {
-      tarefa.style.display = isDone ? "flex" : "none";
+    // filtro principal
+    if (filtroAtual === "todas") {
+      deveMostrar = true;
+    } else if (filtroAtual === "pendentes") {
+      deveMostrar = !isDone;
+    } else if (filtroAtual === "concluidas") {
+      deveMostrar = isDone;
     }
+
+    // filtro complementar "Minhas"
+    if (filtroMinhasAtivo && tarefaObj) {
+      deveMostrar = tarefaObj.usuarioId === userId && deveMostrar;
+    }
+
+    tarefa.style.display = deveMostrar ? "flex" : "none";
+    
   });
 }
 
