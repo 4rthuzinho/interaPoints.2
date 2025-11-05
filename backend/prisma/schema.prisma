@@ -22,6 +22,7 @@ model Tarefa {
   feedback  String   @default("")
   rating    Int      @default(0)
   valor     Int      @default(0)
+  usuarioId String?  @db.ObjectId
 }
 
 model Usuario {
