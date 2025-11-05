@@ -503,10 +503,10 @@ body {
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: 600;
   transition: background-color 0.2s;
 }
 
 .btn-sair:hover {
-  background-color: #e53935;
+  background-color: #e63f3f;
+  font-weight: bold;
 }
