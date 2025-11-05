@@ -4,6 +4,7 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 import bcrypt from "bcryptjs";
+import { atualizarPontuacao } from './services/pontuacaoService.js'
 import { gerarToken, verificarToken, permitirRoles } from "./middleware/auth.js";
 
 const app = express();
@@ -178,6 +179,28 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ error: "Erro no processo de login" });
   }
 });
+
+app.put('/recalcularPontuacao/:usuarioId', async (req, res) => {
+  try {
+    const { usuarioId } = req.params
+
+    // Verifica se o usuário existe
+    const usuario = await prisma.usuario.findUnique({ where: { id: usuarioId } })
+    if (!usuario) return res.status(404).json({ error: 'Usuário não encontrado' })
+
+    // Atualiza a pontuação
+    const novaPontuacao = await atualizarPontuacao(usuarioId)
+
+    res.json({
+      message: 'Pontuação recalculada com sucesso',
+      usuarioId,
+      novaPontuacao
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Erro ao recalcular pontuação' })
+  }
+})
 
 app.listen(3000, () => {
   console.log('✅ Servidor rodando em http://localhost:3000');
