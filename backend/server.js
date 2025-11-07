@@ -180,27 +180,39 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.put('/recalcularPontuacao/:usuarioId', async (req, res) => {
-  try {
-    const { usuarioId } = req.params
+app.put(
+  '/recalcularPontuacao',
+  verificarToken,
+  permitirRoles('ADMIN'),
+  async (req, res) => {
+    try {
+      const usuarios = await prisma.usuario.findMany();
 
-    // Verifica se o usuário existe
-    const usuario = await prisma.usuario.findUnique({ where: { id: usuarioId } })
-    if (!usuario) return res.status(404).json({ error: 'Usuário não encontrado' })
+      if (usuarios.length === 0)
+        return res.status(404).json({ error: 'Nenhum usuário encontrado' });
 
-    // Atualiza a pontuação
-    const novaPontuacao = await atualizarPontuacao(usuarioId)
+      const resultados = [];
 
-    res.json({
-      message: 'Pontuação recalculada com sucesso',
-      usuarioId,
-      novaPontuacao
-    })
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'Erro ao recalcular pontuação' })
+      for (const usuario of usuarios) {
+        const novaPontuacao = await atualizarPontuacao(usuario.id);
+        resultados.push({
+          usuarioId: usuario.id,
+          nome: usuario.name,
+          novaPontuacao
+        });
+      }
+
+      res.json({
+        message: 'Pontuações recalculadas com sucesso:',
+        totalUsuarios: resultados.length,
+        resultados
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Erro ao recalcular pontuações' });
+    }
   }
-})
+);
 
 app.listen(3000, () => {
   console.log('✅ Servidor rodando em http://localhost:3000');

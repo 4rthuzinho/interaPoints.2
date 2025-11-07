@@ -11,8 +11,6 @@ export async function atualizarPontuacao(usuarioId) {
     where: { usuarioId, feita: true },
     select: { id: true, titulo: true, feita: true, valor: true }
   })
-  console.log("Pontuação de tarefas concluídas:", tarefasConcluidas.map(t => t.valor))
-  console.log("Tarefas concluídas:", tarefasConcluidas)
 
   // Soma os valores
   const pontuacao = tarefasConcluidas.reduce((total, tarefa) => total + tarefa.valor, 0)
@@ -22,6 +20,5 @@ export async function atualizarPontuacao(usuarioId) {
     where: { id: usuarioId },
     data: { pontuacao }
   })
-console.log("Pontuação:", pontuacao);
   return pontuacao
 }

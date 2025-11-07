@@ -26,6 +26,7 @@ export function permitirRoles(...rolesPermitidos) {
   return (req, res, next) => {
     if (!req.user) return res.status(401).json({ error: "Usuário não autenticado" });
     if (!rolesPermitidos.includes(req.user.role)) {
+      console.log("role:", req.user.role)
       return res.status(403).json({ error: "Acesso negado" });
     }
     next();
