@@ -41,3 +41,12 @@ enum Role {
   ADMIN
   USER
 }
+
+model Recompensa {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  titulo      String
+  valor       Int
+  status      String   @default("active") // active, inactive, claimed
+  usuarioId   String?  @db.ObjectId       // gestor que criou ou colaborador que resgatou
+  createdAt   DateTime @default(now())
+}

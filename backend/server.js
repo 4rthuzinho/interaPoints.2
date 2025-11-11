@@ -30,7 +30,7 @@ app.get('/tarefas', async (req, res) => {
     console.log("Get Tarefas:", todasTarefas);
   }catch(error) {
     console.error(error);
-    res.status(500).json({error: 'Erro ao bsucar tarefas.'})
+    res.status(500).json({error: 'Erro ao buscar tarefas.'})
   }
 });
 
@@ -213,6 +213,57 @@ app.put(
     }
   }
 );
+
+// ROTA PARA CRIAR RECOMPENSA (ADMIN)
+app.post(
+  "/recompensas",
+  verificarToken,
+  permitirRoles("ADMIN"),
+  async (req, res) => {
+    try {
+      const { titulo, valor } = req.body;
+
+      if (!titulo || !valor) {
+        return res
+          .status(400)
+          .json({ error: "Os campos 'titulo' e 'valor' são obrigatórios." });
+      }
+
+      const recompensa = await prisma.recompensa.create({
+        data: {
+          titulo,
+          valor,
+          status: "active",
+        },
+      });
+
+      res.status(201).json({
+        message: "Recompensa criada com sucesso!",
+        recompensa,
+      });
+      console.log("Recompensa criada com sucesso:", recompensa.titulo)
+    } catch (error) {
+      console.error("Erro ao criar recompensa:", error);
+      res.status(500).json({ error: "Erro interno ao criar recompensa." });
+    }
+  }
+);
+
+// Rota para buscar tarefas
+app.get('/recompensas', async (req, res) => {
+  try {
+    const todasRecompensas = await prisma.recompensa.findMany();
+    if(todasRecompensas.length === 0){
+      return res.status(404).json({ message: "Nenhuma tarefa encontrada" });
+    }
+
+    res.status(200).json(todasRecompensas);
+    console.log("Get Recompensas:", todasRecompensas);
+  }catch(error) {
+    console.error(error);
+    res.status(500).json({error: 'Erro ao buscar recompensas.'})
+  }
+});
 
 app.listen(3000, () => {
   console.log('✅ Servidor rodando em http://localhost:3000');

@@ -510,3 +510,54 @@ body {
   background-color: #e63f3f;
   font-weight: bold;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.card-recompensa {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 1rem;
+  text-align: center;
+}
+
+.card-recompensa h3 {
+  margin-bottom: 0.5rem;
+}
+
+.card-recompensa button {
+  margin-top: 0.5rem;
+}
+
+.admin-only {
+  display: none;
+}
+
+body.admin .admin-only {
+  display: inline-block;
+}
+
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+}
+
+.modal.hidden { display: none; }
+
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 400px;
+}

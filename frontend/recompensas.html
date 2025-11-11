@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recompensas</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header>
+    <h1>🎁 Recompensas</h1>
+    <nav>
+      <a href="index.html">Tarefas</a>
+      <a href="recompensas.html" class="active">Recompensas</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="lista-recompensas" class="grid"></section>
+    <button id="btnNovaRecompensa" class="admin-only">➕ Nova Recompensa</button>
+  </main>
+
+  <div id="modalRecompensa" class="modal hidden">
+    <div class="modal-content">
+      <h2>Cadastrar Recompensa</h2>
+      <input type="text" id="tituloRecompensa" placeholder="Título da recompensa" />
+      <input type="number" id="valorRecompensa" placeholder="Custo em pontos" />
+      <button id="salvarRecompensa">Salvar</button>
+      <button id="cancelarRecompensa">Cancelar</button>
+    </div>
+  </div>
+
+  <script type="module" src="./scripts/recompensas.js"></script>
+</body>
+</html>
