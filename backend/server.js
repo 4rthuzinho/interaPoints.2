@@ -153,13 +153,14 @@ app.post("/login", async (req, res) => {
 
     const usuario = await prisma.usuario.findUnique({ where: { email } });
     if (!usuario) {
+      console.log("usuário n encontrado.");
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
     if (password !== usuario.password) {
   console.log("senha digitada:", password)
   console.log("Senha correta:", usuario.password)
-  return res.status(401).json({ error: "Senha incorreta" });
+  return res.status(401).json({ error: "Senha incorreta", message: "Senha incorreta."});
 }
     const token = gerarToken(usuario);
 
@@ -171,6 +172,7 @@ app.post("/login", async (req, res) => {
         name: usuario.name,
         email: usuario.email,
         role: usuario.role,
+        pontuacao: usuario.pontuacao,
       },  
     });
     console.log("Login sucessfuly by user:", usuario.name)

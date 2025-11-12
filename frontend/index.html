@@ -1,71 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerenciador de Tarefas</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="app">
-    <header class="header">
-  <div class="logo-area">
-    <img src="logo.png" alt="Logo" class="logo">
-  </div>
-  <a href="recompensas.html" id="btnCriarRecompensa" class="btn-criar-recompensa">+ Nova Recompensa</a>
-  <a href="nova-tarefa.html" id="btnCriarTarefa" class="btn-criar">+ Nova Tarefa</a>
-  <button id="btnLogout"  class="btn-sair" >Sair</button>
-</header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InteraPoints - Painel</title>
 
+    <!-- CSS base e layout -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="../components/float/float.css" />
+  </head>
 
-    <nav class="menu">
-      <a href="index.html" class="menu-link">Home</a>
-    </nav>
-
-    <aside class="sidebar">
-      <div class="stats">
-        <div class="stat">
-          <span class="stat-label">Total:</span>
-          <span class="stat-num" id="total">0</span>
+  <body>
+    <div id="app">
+      <!-- HEADER fixo -->
+      <header class="header">
+        <div class="logo-area">
+          <img src="./assets/imagens/logo.png" alt="InteraPoints" class="logo" />
+          <h1 class="titulo">InteraPoints</h1>
         </div>
-        <div class="stat">
-          <span class="stat-label">Concluídas:</span>
-          <span class="stat-num" id="feitas">0</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Pendentes:</span>
-          <span class="stat-num" id="pendentes">0</span>
-        </div>
-      </div>
-      <div class="progress-wrapper">
-        <label for="progresso">Progresso:</label>
-        <div class="progress-bar">
-          <div class="progress" id="progresso"></div>
-        </div>
-      </div>
-    </aside>
 
-    <main class="main">
-      <div class="filtros">
-        <button data-filtro="todas" class="filtro-btn ativo">Todas</button>
-        <button data-filtro="pendentes" class="filtro-btn">Pendentes</button>
-        <button data-filtro="concluidas" class="filtro-btn">Concluídas</button>
-      </div>
-      <div class="filtros autor-filtros">
-        <button data-filtro="minhas" class="filtro-btn">Minhas</button>
-      </div>
-     <ul id="taskList" class="task-list">
-        <li class="task">
-        </li>
-      </ul>
-    </main>
+        <nav class="header-nav">
+          <button id="btnNovaTarefa" class="btn-header">+ Nova Tarefa</button>
+          <button id="btnNovaRecompensa" class="btn-header">🎁 Recompensas</button>
+          <button id="btnLogout" class="btn-sair">Sair</button>
+        </nav>
+      </header>
 
-    <footer class="footer">
-      <p>© 2025 Gerenciador de Tarefas</p>
-    </footer>
-  </div>
+      <!-- SIDEBAR fixa -->
+      <aside class="sidebar">
+        <ul class="menu-lateral">
+          <li><a href="#home" data-page="pages/home.html" class="ativo">🏠 Home</a></li>
+          <li><a href="#tarefas" data-page="pages/tarefas.html">📋 Tarefas</a></li>
+          <li><a href="#usuarios" data-page="pages/usuarios.html">👥 Usuários</a></li>
+          <li><a href="#recompensas" data-page="pages/recompensas.html">🎁 Recompensas</a></li>
+        </ul>
 
-  <script type="module" src="./script.js"></script>
-  <div id="toast" class="toast hidden"></div>
-</body>
+        <div class="sidebar-footer">
+          <p class="versao">v1.0.0</p>
+        </div>
+      </aside>
+
+      <!-- CONTEÚDO DINÂMICO -->
+      <main id="conteudo">
+        <div class="loading">Carregando conteúdo...</div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <p>© 2025 InteraPoints - Sistema Gamificado de Tarefas</p>
+      </footer>
+    </div>
+
+    <!-- JS -->
+    <script type="module" src="./js/layout.js"></script>
+  </body>
 </html>

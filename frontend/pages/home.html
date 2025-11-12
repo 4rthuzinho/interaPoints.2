@@ -1,0 +1,63 @@
+<section class="dashboard">
+  <div class="dashboard-header">
+    <h2 id="nomeUsuario">Bem-vindo 👋</h2>
+    <p class="sub">Aqui está sua pontuação atual:</p>
+  </div>
+
+  <div class="pontuacao-card">
+    <p class="label">Sua pontuação</p>
+    <h1 id="pontuacaoValor" class="valor">...</h1>
+  </div>
+</section>
+
+<script type="module" src="./js/home.js"></script>
+
+<style>
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .dashboard-header {
+    margin-bottom: 0.5rem;
+  }
+
+  .dashboard-header h2 {
+    font-size: 1.8rem;
+    color: var(--cor-texto);
+  }
+
+  .dashboard-header .sub {
+    font-size: 1rem;
+    color: #666;
+  }
+
+  .pontuacao-card {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    max-width: 380px;
+    text-align: center;
+    transition: 0.2s ease;
+  }
+
+  .pontuacao-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(1, 198, 216, 0.1);
+  }
+
+  .pontuacao-card .label {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+  }
+
+  .pontuacao-card .valor {
+    font-size: 3rem;
+    color: var(--cor-principal);
+    font-weight: 800;
+  }
+</style>

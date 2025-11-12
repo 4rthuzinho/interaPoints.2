@@ -1,0 +1,52 @@
+.float-msg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  min-width: 260px;
+  max-width: 90%;
+  background-color: #333;
+  color: #fff !important;
+  padding: 1rem 1.4rem;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  text-align: center;
+  opacity: 0;
+  animation: floatIn 0.3s ease forwards;
+  z-index: 999;
+}
+
+.float-msg.sucesso {
+  background-color: #22bb33;
+}
+
+.float-msg.erro {
+  background-color: #ff4e4e;
+}
+
+.float-msg.aviso {
+  background-color: #01c6d8;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -55%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes floatOut {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -55%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
