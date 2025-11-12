@@ -1,0 +1,188 @@
+/* ====== HEADER RECOMPENSAS ====== */
+.header {
+  grid-area: header;
+  background: #fff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-left img {
+  height: 60px;
+  object-fit: contain;
+}
+
+.header-left h1 {
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.header-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.header-nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.header-nav a.active {
+  color: #00bcd4;
+  border-bottom: 2px solid #00bcd4;
+  padding-bottom: 2px;
+}
+
+.header-nav a:hover {
+  color: #00bcd4;
+}
+
+/* ====== MAIN (ESPACAMENTO LATERAL CORRIGIDO) ====== */
+.main {
+  grid-area: main;
+  background: #fff;
+  padding: 2rem;
+  margin: 1.5rem 2rem 1.5rem 2rem; /* espaçamento lateral esquerdo + direito */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* ====== GRID DE RECOMPENSAS ====== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* ====== CARDS ====== */
+.card-recompensa {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 1.2rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.card-recompensa:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card-recompensa h3 {
+  color: #00bcd4;
+  margin-bottom: 0.5rem;
+}
+
+.card-recompensa p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.8rem;
+}
+
+.card-recompensa button {
+  background: #01c6d8;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.card-recompensa button:hover {
+  background: #02919e;
+}
+
+/* ====== BOTÃO NOVA RECOMPENSA ====== */
+#btnNovaRecompensa {
+  margin-top: 1.5rem;
+  background: #01c6d8;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+#btnNovaRecompensa:hover {
+  background: #02919e;
+  transform: translateY(-2px);
+}
+
+/* ====== MODAL ====== */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+
+.modal-content h2 {
+  text-align: center;
+  color: #00bcd4;
+  margin-bottom: 1rem;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 768px) {
+  .main {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .header-nav {
+    justify-content: center;
+  }
+
+  #btnNovaRecompensa {
+    width: 100%;
+  }
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logo {
+  height: 60px;         /* ou 100% se o header tiver altura fixa */
+  max-height: 100%;     /* nunca ultrapassar o header */
+  object-fit: contain;  /* mantém proporção da imagem */
+}
