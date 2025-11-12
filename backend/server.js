@@ -265,6 +265,86 @@ app.get('/recompensas', async (req, res) => {
   }
 });
 
+// PUT /recompensas/:id — atualizar status e/ou vincular usuarioId
+app.put(
+  "/recompensas/:id",
+  verificarToken, // precisa estar logado
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status, usuarioId } = req.body;
+
+      if (!status) {
+        return res.status(400).json({ error: "O campo 'status' é obrigatório." });
+      }
+
+      // Busca a recompensa atual
+      const recompensa = await prisma.recompensa.findUnique({ where: { id } });
+      if (!recompensa) {
+        return res.status(404).json({ error: "Recompensa não encontrada." });
+      }
+
+      // Fluxo de RESGATE pelo usuário comum
+      if (status === "claimed") {
+        if (!usuarioId) {
+          return res
+            .status(400)
+            .json({ error: "Para resgatar, envie 'usuarioId'." });
+        }
+        if (recompensa.status !== "active") {
+          return res
+            .status(409)
+            .json({ error: "Recompensa não está ativa para resgate." });
+        }
+
+        const atualizada = await prisma.recompensa.update({
+          where: { id },
+          data: { status: "claimed", usuarioId },
+        });
+
+        return res.json({
+          message: "Recompensa resgatada com sucesso!",
+          recompensa: atualizada,
+        });
+      }
+
+      // Fluxo ADMIN: alternar active/inactive
+if (status === "inactive" || status === "active") {
+  // exige ADMIN
+  if (req.user?.role !== "ADMIN") {
+    return res
+      .status(403)
+      .json({ error: "Apenas ADMIN pode alterar para active/inactive." });
+  }
+
+  // Se for inativar, limpa usuarioId automaticamente
+  const dataAtualizacao =
+    status === "inactive"
+      ? { status, usuarioId: null }
+      : { status, ...(usuarioId && { usuarioId }) };
+
+  const atualizada = await prisma.recompensa.update({
+    where: { id },
+    data: dataAtualizacao,
+  });
+
+  return res.json({
+    message: "Recompensa atualizada com sucesso!",
+    recompensa: atualizada,
+  });
+}
+
+      // Status inválido
+      return res
+        .status(400)
+        .json({ error: "Status inválido. Use: active, inactive ou claimed." });
+    } catch (err) {
+      console.error("Erro ao atualizar recompensa:", err);
+      return res.status(500).json({ error: "Erro interno ao atualizar recompensa." });
+    }
+  }
+);
+
 app.listen(3000, () => {
   console.log('✅ Servidor rodando em http://localhost:3000');
 });
