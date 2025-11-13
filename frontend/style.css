@@ -561,3 +561,17 @@ body.admin .admin-only {
   width: 90%;
   max-width: 400px;
 }
+.btn-criar-recompensa {
+  background: #01c6d8;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.btn-criar-recompensa:hover {
+  background: #02919e;
+  font-weight: bold;
+}
