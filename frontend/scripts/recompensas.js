@@ -28,6 +28,7 @@ async function carregarRecompensas() {
 }
 
 function renderRecompensas(recompensas) {
+  recompensas.sort((a, b) => (a.status === b.status ? 0 : a.active ? 1 : -1));
   listaEl.innerHTML = "";
 
   if (!recompensas.length) {
