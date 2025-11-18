@@ -8,16 +8,18 @@
   <link rel="stylesheet" href="./recompensas.css" />
 </head>
 <body>
-  <header>
-      <div class="logo-area">
-        <img src="logo.png" alt="Logo" class="logo">
-      </div>
-    <h1>🎁 Recompensas</h1>
-    <nav class="header-nav">
-      <a href="index.html">Tarefas</a>
-      <a href="recompensas.html" class="active">Recompensas</a>
-    </nav>
-  </header>
+  <header class="topbar">
+  <div class="left">
+    <img src="logo.png" alt="Interativa" class="logo" />
+  </div>
+
+  <div class="right">
+    <button onclick="location.href='nova-tarefa.html'" class="btn-acao">+ Nova Tarefa</button>
+    <button onclick="location.href='index.html'" class="btn-acao">Lista de Tarefas</button>
+    <button id="logoutBtn" class="btn-sair">Sair</button>
+  </div>
+</header>
+
 
   <main>
     <section id="lista-recompensas" class="grid"></section>

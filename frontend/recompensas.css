@@ -1,4 +1,4 @@
-/* ====== HEADER RECOMPENSAS ====== */
+====== HEADER RECOMPENSAS ======
 .header {
   grid-area: header;
   background: #fff;
@@ -185,4 +185,60 @@
   height: 60px;         /* ou 100% se o header tiver altura fixa */
   max-height: 100%;     /* nunca ultrapassar o header */
   object-fit: contain;  /* mantém proporção da imagem */
+}
+/* TOPBAR PADRÃO DO SISTEMA */
+.topbar {
+  background: white;
+  padding: 15px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.topbar .left img {
+  height: 40px;
+}
+
+.topbar .center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.topbar .right {
+  display: flex;
+  gap: 15px;
+}
+
+/* Botões principais */
+.btn-acao {
+  background: #00c7d3;
+  color: white;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-acao:hover {
+  opacity: 0.85;
+}
+
+/* Botão Sair */
+.btn-sair {
+  background: #ff5c5c;
+  color: white;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-sair:hover {
+  opacity: 0.85;
 }
