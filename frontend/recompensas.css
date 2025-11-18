@@ -76,33 +76,37 @@ header {
 }
 
 .btn-acao {
-  background: #00c7d3;
+  margin-top: 1.5rem;
+  background: #01c6d8;
   color: white;
-  padding: 10px 22px;
   border: none;
+  padding: 0.8rem 1.6rem;
   border-radius: 8px;
-  font-size: 15px;
   cursor: pointer;
-  transition: 0.2s;
+  font-weight: 600;
+  transition: background 0.3s;
 }
 
 .btn-acao:hover {
-  opacity: 0.85;
+  background: #02919e;
+  transform: translateY(-2px);
 }
 
 .btn-sair {
+  margin-top: 1.5rem;
   background: #ff5c5c;
   color: white;
-  padding: 10px 22px;
   border: none;
+  padding: 0.8rem 1.6rem;
   border-radius: 8px;
-  font-size: 15px;
   cursor: pointer;
-  transition: 0.2s;
+  font-weight: 600;
+  transition: background 0.3s;
 }
 
 .btn-sair:hover {
-  opacity: 0.85;
+  background: #ac0808;
+  transform: translateY(-2px);
 }
 
 /* ===========================
@@ -218,7 +222,7 @@ header {
    BOTÃO NOVA RECOMPENSA
 =========================== */
 
-#btnNovaRecompensa {
+/* #btnNovaRecompensa {
   margin-top: 1.5rem;
   background: #01c6d8;
   color: white;
@@ -228,7 +232,7 @@ header {
   cursor: pointer;
   font-weight: 600;
   transition: background 0.3s;
-}
+} */
 
 #btnNovaRecompensa:hover {
   background: #02919e;
