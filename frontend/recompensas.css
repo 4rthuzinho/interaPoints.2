@@ -86,6 +86,24 @@ header {
   font-weight: 600;
   transition: background 0.3s;
 }
+.btn-acao-home {
+  margin-top: 1.5rem;
+  background: #01c6d8;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  transition: 0.15s ease-in-out;
+}
+.btn-acao-home:hover {
+  background: #02919e;
+  transform: translateY(-2px);
+}
 
 .btn-acao:hover {
   background: #02919e;
@@ -105,7 +123,7 @@ header {
 }
 
 .btn-sair:hover {
-  background: #ac0808;
+  background: #bd2727;
   transform: translateY(-2px);
 }
 
