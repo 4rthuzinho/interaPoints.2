@@ -38,16 +38,17 @@ function renderRecompensas(recompensas) {
   recompensas.forEach((r) => {
     const card = document.createElement("div");
     card.classList.add("card-recompensa");
-    card.innerHTML = `
+    card.innerHTML =`
       <h3>${r.titulo}</h3>
       <p><strong>${r.valor}</strong> pontos</p>
       <p>Status: ${r.status}</p>
       ${
         r.status === "active"
           ? `<button data-id="${r.id}" class="btn-resgatar">Resgatar</button>`
-          : `<button disabled>${r.status}</button>`
+          : `<button disabled class="${r.status}">${r.status}</button>`
       }
     `;
+    // console.log(r.status)
     listaEl.appendChild(card);
   });
 
@@ -92,7 +93,7 @@ function renderRecompensas(recompensas) {
       }
     });
   });
-} // <-- Faltava ESSA chave aqui para fechar renderRecompensas()
+} 
 
 // Modal controle
 btnNova.addEventListener("click", () => modal.classList.remove("hidden"));
@@ -110,14 +111,12 @@ salvarBtn.addEventListener("click", async () => {
   }
 
   try {
-    // recupera token do ADMIN salvo após login
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Você precisa estar logado como ADMIN para criar recompensas.");
       return;
     }
 
-    // envia requisição ao backend
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
