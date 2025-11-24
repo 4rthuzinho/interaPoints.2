@@ -287,52 +287,64 @@ app.put(
       }
 
       // Fluxo de RESGATE pelo usuário comum
-      if (status === "claimed") {
-        if (!usuarioId) {
-          return res
-            .status(400)
-            .json({ error: "Para resgatar, envie 'usuarioId'." });
-        }
-        if (recompensa.status !== "active") {
-          return res
-            .status(409)
-            .json({ error: "Recompensa não está ativa para resgate." });
-        }
+      // Fluxo de RESGATE pelo usuário comum
+if (status === "claimed") {
+  const userId = req.user?.id; // SEM usar body.usuarioId
 
-        const atualizada = await prisma.recompensa.update({
-          where: { id },
-          data: { status: "claimed", usuarioId },
-        });
-
-        return res.json({
-          message: "Recompensa resgatada com sucesso!",
-          recompensa: atualizada,
-        });
-      }
-
-      // Fluxo ADMIN: alternar active/inactive
-if (status === "inactive" || status === "active") {
-  // exige ADMIN
-  if (req.user?.role !== "ADMIN") {
-    return res
-      .status(403)
-      .json({ error: "Apenas ADMIN pode alterar para active/inactive." });
+  if (!userId) {
+    return res.status(401).json({ error: "Usuário não autenticado." });
   }
 
-  // Se for inativar, limpa usuarioId automaticamente
-  const dataAtualizacao =
-    status === "inactive"
-      ? { status, usuarioId: null }
-      : { status, ...(usuarioId && { usuarioId }) };
+  // Recompensa só pode ser resgatada se estiver ACTIVE
+  if (recompensa.status !== "active") {
+    return res
+      .status(409)
+      .json({ error: "Recompensa não está ativa para resgate." });
+  }
 
-  const atualizada = await prisma.recompensa.update({
-    where: { id },
-    data: dataAtualizacao,
+  // Iniciar transação para evitar race condition
+  const resultado = await prisma.$transaction(async (trx) => {
+    // Buscar usuário dentro da transação
+    const user = await trx.usuario.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new Error("Usuário não encontrado.");
+    }
+
+    // Verificação de pontuação
+    if (user.pontuacao < recompensa.valor) {
+      return { erro: "Pontuação insuficiente para resgatar esta recompensa." };
+    }
+
+    // Subtrair pontos
+    await trx.usuario.update({
+      where: { id: userId },
+      data: {
+        pontuacao: user.pontuacao - recompensa.valor,
+      },
+    });
+
+    // Marcar recompensa como claimed
+    const atualizada = await trx.recompensa.update({
+      where: { id },
+      data: {
+        status: "claimed",
+        usuarioId: userId,
+      },
+    });
+
+    return { atualizada };
   });
 
+  if (resultado.erro) {
+    return res.status(409).json({ error: resultado.erro });
+  }
+
   return res.json({
-    message: "Recompensa atualizada com sucesso!",
-    recompensa: atualizada,
+    message: "Recompensa resgatada com sucesso!",
+    recompensa: resultado.atualizada,
   });
 }
 
