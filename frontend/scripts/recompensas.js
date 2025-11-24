@@ -87,6 +87,7 @@ function renderRecompensas(recompensas) {
         console.log("Recompensa resgatada:", data.recompensa);
 
         alert("🎉 Recompensa resgatada com sucesso!");
+        await atualizarPontos();
         await carregarRecompensas(); // recarrega a lista atualizada
       } catch (err) {
         console.error("Erro ao resgatar recompensa:", err);
@@ -151,5 +152,14 @@ salvarBtn.addEventListener("click", async () => {
   }
 });
 
+function atualizarPontos() {
+  const pontuacao = localStorage.getItem("pontuacao");
+
+  if (document.getElementById("pontuacao")) {
+    document.getElementById("pontuacao").textContent = pontuacao;
+  }
+}
+
 // Chama na inicialização
 carregarRecompensas();
+atualizarPontos();

@@ -172,6 +172,7 @@ app.post("/login", async (req, res) => {
         name: usuario.name,
         email: usuario.email,
         role: usuario.role,
+        pontuacao: usuario.pontuacao,
       },  
     });
     console.log("Login sucessfuly by user:", usuario.name)

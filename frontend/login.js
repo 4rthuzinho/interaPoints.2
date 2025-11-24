@@ -29,6 +29,7 @@ btnLogin.addEventListener("click", async () => {
     localStorage.setItem("role", data.user.role);
     localStorage.setItem("usuario", JSON.stringify(data.user));
     localStorage.setItem("userId", data.user.id);
+    localStorage.setItem("pontuacao", data.user.pontuacao);
 
     // redireciona para a página principal;
     window.location.href = "index.html";
