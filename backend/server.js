@@ -36,7 +36,7 @@ app.get('/tarefas', async (req, res) => {
 
 // Rota para criar tarefa
 app.post('/tarefas', async (req, res) => {
-  const { titulo, descricao } = req.body;
+  const { titulo, descricao, valor } = req.body;
 
   if (!titulo || !descricao) {
     return res.status(400).json({ error: 'Título e descrição são obrigatórios.' });
@@ -46,7 +46,8 @@ app.post('/tarefas', async (req, res) => {
     const tarefa = await prisma.tarefa.create({
       data: {
         titulo,
-        descricao
+        descricao,
+        valor
       }
     });
 
